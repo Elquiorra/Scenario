@@ -5,40 +5,23 @@ using UnityEngine;
 public class Parallax : MonoBehaviour{
 
     private float lengthX, startPosX;
-    private float lengthY, startPosY;
     public GameObject cam;
-    [SerializeField] float parallaxEffectX;
-    [SerializeField] float parallaxEffectY;
+    [SerializeField] float parallaxEffect;
     void Start(){
         startPosX = transform.position.x;
-        startPosY = transform.position.y;
-
         lengthX = GetComponent<SpriteRenderer>().bounds.size.x;
-        lengthY = GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
-    void FixedUpdate(){
-        float tempX = (cam.transform.position.x * (1 - parallaxEffectX));
-        float distX = (cam.transform.position.x * parallaxEffectX);
-        transform.position = new Vector3(startPosX + distX, transform.position.y, transform.position.z);
+    void Update(){
+        float temp = (cam.transform.position.x * (1 - parallaxEffect));
+        float dist = (cam.transform.position.x * parallaxEffect);
+        transform.position = new Vector3(startPosX + dist, cam.transform.position.y, transform.position.z);
 
-        if(tempX > startPosX + lengthX){
+        if(temp > (startPosX + lengthX)){
             startPosX += lengthX;
         }
-        else if(tempX < startPosX - lengthX){
+        else if(temp < (startPosX - lengthX)){
             startPosX -= lengthX;
-        }
-        
-
-        float tempY = (cam.transform.position.y * (1 - parallaxEffectY));
-        float distY = (cam.transform.position.y * parallaxEffectY);
-        transform.position = new Vector3(transform.position.x, startPosY + distY, transform.position.z);
-
-        if(tempY > startPosY + lengthY){
-            startPosY += lengthY;
-        }
-        else if(tempY < startPosY - lengthY){
-            startPosY -= lengthY;
         }
         
     }

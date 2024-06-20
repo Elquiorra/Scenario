@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
    public float MovementSpeed = 120f;
    float xMovement;
    bool jump = false;
+   
 
     void Update(){
         if(Input.GetKey(KeyCode.A)){

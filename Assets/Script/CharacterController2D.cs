@@ -8,6 +8,7 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
 	private Rigidbody2D m_Rigidbody2D;
 	public Animator animator;
+	public GameObject platform;
 	public AudioSource audSource;
 	public AudioClip Run, Walk, Jump;
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = 1f;	// How much to smooth out the movement
@@ -17,11 +18,8 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	public bool m_Grounded;            // Whether or not the player is grounded.
-	public bool m_Platformed = false;
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
-	
-	public PlayerMovement player;
 
 	[Header("Events")]
 	[Space]
@@ -35,24 +33,8 @@ public class CharacterController2D : MonoBehaviour
 		}
 		else if(m_Grounded){
 			animator.SetBool("onAir", false);
-		}		
-	}
-
-	void OnCollisionStay2D(Collision2D other){
-		if(other.gameObject.CompareTag("Platform")){
-			m_Platformed = true;
-		}
-		else{
-			m_Platformed = false;
 		}
 	}
-
-	void OnTriggerStay2D(Collider2D other){
-		if(other.gameObject.CompareTag("Platform")){
-			m_Platformed = true;
-		}
-	}
-
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -61,7 +43,6 @@ public class CharacterController2D : MonoBehaviour
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
 	}
-
 	private void FixedUpdate(){
 		bool wasGrounded = m_Grounded;
 		m_Grounded = false;
@@ -76,8 +57,6 @@ public class CharacterController2D : MonoBehaviour
 			}
 		}
 	}
-
-
 	public void Move(float move, bool jump)
 	{
 		if (m_Grounded || m_AirControl)
@@ -97,24 +76,18 @@ public class CharacterController2D : MonoBehaviour
 		}
 		if (m_Grounded && jump){
 			m_Grounded = false;
-			m_Platformed = false;
 			animator.SetTrigger("Jump");
 			audSource.PlayOneShot(Jump, 0.2f);
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 		}
 	}
-
-
 	private void Flip()
 	{
 		m_FacingRight = !m_FacingRight;
-
-		// Multiply the player's x local scale by -1.
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
-
 	public void Sound(AudioClip soundCode){
 		audSource.clip = soundCode;
 		if(!audSource.isPlaying){
