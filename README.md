@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="100%" alt="The Boy and The Wisp" src="![Cover](https://github.com/Elquiorra/The-Boy-and-the-Wisp/assets/161712928/9e817032-b74b-40c2-85bf-d4e4eb1530af)">
+  <img width="100%" alt="The Boy and The Wisp" src="https://github.com/Elquiorra/The-Boy-and-the-Wisp/blob/main/Cover.png">
   </br>
 </p>
 
